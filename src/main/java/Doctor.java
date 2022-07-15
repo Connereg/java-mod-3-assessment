@@ -60,6 +60,15 @@ public class Doctor {
         }
     }
 
+    public Patient getPatientAtIndexLocale(int indexLocale) {
+        int trueIndex = indexLocale - 1;
+        return patientList.get(trueIndex);
+    }
+
+    public void treatSpecifiedPatient(Patient patient) {
+
+    }
+
     public void listPatientsToTreat() {
         System.out.println(doctorName + " can treat the following patients: ");
         int i = 1;
@@ -67,5 +76,9 @@ public class Doctor {
             System.out.println(i + ". " + patient.getPatientName());
             i++;
         }
+    }
+
+    public int getHealingPower() {
+        return this.healingPower;
     }
 }

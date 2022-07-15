@@ -105,5 +105,14 @@
         public void chosenAilmentReported(String ailmentString) {
             System.out.println("We will now perform a treatment for " + ailmentString);
         }
+
+        public void treatingPatientNotice(Patient patient, Doctor doctor) {
+            System.out.println(patient.getPatientName() + " will now be treated by Dr." + doctor.getDoctorName());
+            System.out.println("Treating patient ... ");
+        }
+
+        public void postTreatmentStats(Patient patient) {
+            System.out.println("Patient " + patient.getPatientName() + " now has a health value of " + patient.getHealthValue() + "/100 after this treatment");
+        }
     }
 

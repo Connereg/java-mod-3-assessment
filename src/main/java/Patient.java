@@ -23,6 +23,11 @@ public class Patient {
         return medicalNeeds;
     }
 
-    public int getHealthValue() { return healthValue; }
+    public int getHealthValue() {
+        return healthValue;
+    }
+    public void setHealthValue(int newHealthValue) {
+        this.healthValue = newHealthValue;
+    }
 
 }

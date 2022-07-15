@@ -1,6 +1,12 @@
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Scanner;
 import java.util.List;
 import java.util.HashSet;
+
 
 public class HospitalWorld {
     public static void main(String[] args) {
@@ -131,16 +137,37 @@ public class HospitalWorld {
                 Doctor doctorChosen = doctorsAvailableToTreat.get((chosenDoctorIndex - 1));
                 hospitalService.choosePatientForDoctorToTreatInstructions();
                 doctorChosen.getSimplePatientList();
+                int patientOfDoctorNum = scanner.nextInt();
+                Patient treatedPatient = doctorChosen.getPatientAtIndexLocale(patientOfDoctorNum);
+                hospitalService.treatingPatientNotice(treatedPatient, doctorChosen);
+                int newHealthValueAfterTreatment = treatedPatient.getHealthValue() + doctorChosen.getHealingPower(); // <- Treatment operation effect on health
+                treatedPatient.setHealthValue(newHealthValueAfterTreatment); // <- Setting new Health value on patient
+                hospitalService.postTreatmentStats(treatedPatient); // <- Print New Health value Post treatment
             }
 
-//        else {
-//            System.out.println("There is no doctor with the specializations needed");
-//        }
+            //6. SAVE HOSPITAL WORLD TO JSON (Rerun?)
+            // JSONIFY THE HOSPITAL
+
 
 
             scanner.close();
         }
     }
+
+    // WORLD METHODS
+
+    public static void writeJson(Hospital hospital) throws JsonProcessingException {
+        String json = new ObjectMapper().writeValueAsString(hospital);
+        System.out.println(json);
+
+        try {
+            FileReader.writeToFile("Hospital.data", json);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
 }
 
 //  PSUEDOCODE:
