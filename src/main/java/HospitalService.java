@@ -1,6 +1,11 @@
 
     public class HospitalService {
 
+        public void restoreHospitalDataInstruction() {
+            System.out.println("Hello User, would you like to restore your last Hospital Session?");
+            System.out.println("y / n");
+        }
+
         public void separatorLine() {
             System.out.println("****************************************************");
         }

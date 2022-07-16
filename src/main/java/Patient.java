@@ -10,6 +10,10 @@ public class Patient {
         this.medicalNeeds = medicalNeedsInput;
         this.healthValue = healthValue;
     }
+    //Constructor 2
+    public Patient(){
+
+    }
 
     public String getPatientName() {
         return patientName;

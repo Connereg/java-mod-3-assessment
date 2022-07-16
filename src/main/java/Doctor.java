@@ -7,6 +7,7 @@ public class Doctor {
     private String doctorName;
     private String doctorSpecialization;
     private int healingPower;
+
     private List<Patient> patientList;
 
 
@@ -18,6 +19,13 @@ public class Doctor {
         this.healingPower = healingPower;
         this.patientList = new ArrayList<>();
     }
+
+    //CONSTRUCTOR 2
+    public Doctor() {
+
+    }
+
+
 
     public String getDoctorName() {
         return doctorName;
@@ -40,8 +48,13 @@ public class Doctor {
     }
 
 
-    public void getPatientList() {
+    public List<Patient> getPatientList() {
+        return patientList;
+    }
+
+    public void printPatientList() {
         System.out.println("The doctor is: " + doctorName);
+        List<Patient> patientList = getPatientList();
         for (Patient patient : patientList) {
             String gotName = patient.getPatientName();
             String gotSpecialty = patient.getMedicalNeeds();

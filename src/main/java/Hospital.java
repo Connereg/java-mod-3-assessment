@@ -10,8 +10,7 @@ public class Hospital {
     private Map<String, List<Doctor>> doctorExpertiseMap;
 
     //Constructor
-    public Hospital(String hospitalNameInput) {
-        this.hospitalName = hospitalNameInput;
+    public Hospital() {
         // Build the map for location
         this.doctorExpertiseMap = new HashMap<>();
     }
@@ -49,6 +48,10 @@ public class Hospital {
 
     public Map<String, List<Doctor>> getExpertiseMap() {
         return this.doctorExpertiseMap;
+    }
+
+    public void setHospitalName(String name) {
+        this.hospitalName = name;
     }
 
 }
