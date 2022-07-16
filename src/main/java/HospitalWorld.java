@@ -185,7 +185,6 @@ public class HospitalWorld {
 
     public static void writeJson(Hospital hospital) throws JsonProcessingException {
         String json = new ObjectMapper().writeValueAsString(hospital);
-        System.out.println(json);
 
         try (FileWriter fw = new FileWriter("Hospital.json");){
             fw.write(json);
