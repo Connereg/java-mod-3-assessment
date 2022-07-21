@@ -94,4 +94,9 @@ public class Doctor {
     public int getHealingPower() {
         return this.healingPower;
     }
+
+    @Override
+    public void toString() {
+        System.out.println();
+    }
 }
