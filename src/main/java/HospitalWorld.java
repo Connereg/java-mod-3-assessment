@@ -17,6 +17,8 @@ public class HospitalWorld {
         HospitalService hospitalService = new HospitalService(); //  <- 1.1:  Initialize Hospital Service to be able to issue instructions
         hospitalService.restoreHospitalDataInstruction();
         String restoreSessionInput = scanner.nextLine();
+        // COLLECTING USER INPUT
+        UserInputInterface userInputInterface = new UserInputImplement();
 
         Hospital hospital = new Hospital();
 
@@ -37,27 +39,18 @@ public class HospitalWorld {
                 String hospitalNameInput = scanner.nextLine(); // <- 2.2: Collect User Inout to Name Hospital World
                 hospital.setHospitalName(hospitalNameInput);
 
-    //      Ailment cold = new Ailment("Cold", 20);     //  <- Initializing instance of Ailment, LIME WILL NOT BE TREATABLE
-    //      Ailment bodyTrauma = new Ailment("Body Trauma", 50);
-    //      Ailment lime = new Ailment("Lime Disease", 30);
-    //        boolean runAgain = true;
 
-                //  3. USER INPUT DEFINES 3 DOCTOR OBJECTS -> Doctor class( Doctor Class: List<Patient> patients, Specialty mySpecialty, int healingPower, METHODS: treatPatient(patient), removePatient(patient)
+                //  3. USER INPUT DEFINES 3 DOCTOR OBJECTS -> Doctor class( Doctor Class: List<Patient> patients, Specialty mySpecialty, METHODS: treatPatient(patient), removePatient(patient)
+
                 for (int i = 0; i < 3; i++) {
                     // 3. Ask to create 3 doctors, each with a name and specialty
                     hospitalService.doctorMakerInstructions();
-                    String doctorNameInput = scanner.nextLine();  // <- Recieve Doctor Name
-                    hospitalService.doctorSpecialtyInstructions();
-                    int doctorSpecialtyInput = scanner.nextInt(); // <- Recieve Doctor Specialty Input
-                    String specialtyString = hospitalService.evaluateSpecialty(doctorSpecialtyInput); // Get Name of Ailment from Selections Provided
-                    int docHealingPower = hospitalService.evaluateDoctorHealingPower(specialtyString);
-                    scanner.nextLine(); // <- TO CLEAR SCANNER FOR LOOP
-
+                    DoctorMaker doctorMaker = new DoctorMaker(userInputInterface);
                     // 4. Generate 3 doctors with the properties given by user
-                    Doctor doctorObject = new Doctor(doctorNameInput, specialtyString, docHealingPower);
+                    Doctor newDoctor = doctorMaker.createDoctor();
 
                     // 5. Add the 3 doctors to the Hospital
-                    hospital.addDoctorToExpertiseMap(specialtyString, doctorObject);
+                    hospital.addDoctorToExpertiseMap(newDoctor.getDoctorSpecialization(), newDoctor);
                     hospitalService.separatorLine();
                 }
                 System.out.println("All Doctors have been added to the Hospital");
@@ -68,44 +61,40 @@ public class HospitalWorld {
                 for (int k = 0; k < 5; k++) {
                     // 6. Ask the user to create 5 Patients, each with a name and specialization need
                     hospitalService.patientMakerInstructions();
-                    String patientNameInput = scanner.nextLine();
-                    hospitalService.patientMedicalNeedsInstructions();
-                    int patientAilmentInput = scanner.nextInt();
-                    String patientAilmentString = hospitalService.evaluateSpecialty(patientAilmentInput);
-                    int patientStartingHealthValue = hospitalService.evaluatePatientStartingHealthValue(patientAilmentString);
-
+                    PatientGenerator patientGenerator = new PatientGenerator(userInputInterface);
                     // 7. Generate 5 patients with the properties given by the user
-                    Patient patientObject = new Patient(patientNameInput, patientAilmentString, patientStartingHealthValue);
+                    Patient patientObject = patientGenerator.createPatient();
 
                     // 8. Add the patients to the DOCTOR
-                    if (hospital.getExpertiseMap().containsKey(patientObject.getMedicalNeeds())) {
-                        List<Doctor> doctorsOfSpecialty = hospital.getDoctorList(patientObject.getMedicalNeeds());
-                        System.out.println("Available Doctors with required specialization (Please Pick a number associated with a doctor!)");
-                        int indexLocale = 0;
-                        for (Doctor doctor : doctorsOfSpecialty) {
-                            indexLocale += 1;
-                            System.out.println(indexLocale + ". " + doctor.getDoctorName());
-                        }
-                        System.out.println("Please choose a doctor to assign the patient to: (Use the number associated with that Doctor)");
-                        int chosenDoctorIndex = 0;
-                        try {
-                            chosenDoctorIndex = scanner.nextInt();
-                        } catch (Exception e) {
-                            System.out.println("Please use a number to pick your doctor");
-                        }
-                        scanner.nextLine();
-
-                        if (chosenDoctorIndex == 0) {
-                            System.out.println("There is no doctor with the specializations needed");
-                        } else {
-
-                            Doctor doctorChosen = doctorsOfSpecialty.get((chosenDoctorIndex - 1));
-                            doctorChosen.addPatientToDoctor(patientObject);
-                            System.out.println(patientObject.getPatientName() + " has been give to " + doctorChosen.getDoctorName() + " as a patient!");
-                        }
-                    } else {
-                        System.out.println("The Medical system can't support this individuals needs :( ");
-                    }
+                    GivePatientToDoctor givePatientToDoctor = new GivePatientToDoctor();
+//                    if (hospital.getExpertiseMap().containsKey(patientObject.getMedicalNeeds())) {
+//                        List<Doctor> doctorsOfSpecialty = hospital.getDoctorList(patientObject.getMedicalNeeds());
+//                        System.out.println("Available Doctors with required specialization (Please Pick a number associated with a doctor!)");
+//                        int indexLocale = 0;
+//                        for (Doctor doctor : doctorsOfSpecialty) {
+//                            indexLocale += 1;
+//                            System.out.println(indexLocale + ". " + doctor.getDoctorName());
+//                        }
+//                        System.out.println("Please choose a doctor to assign the patient to: (Use the number associated with that Doctor)");
+//                        int chosenDoctorIndex = 0;
+//                        try {
+//                            chosenDoctorIndex = scanner.nextInt();
+//                        } catch (Exception e) {
+//                            System.out.println("Please use a number to pick your doctor");
+//                        }
+//                        scanner.nextLine();
+//
+//                        if (chosenDoctorIndex == 0) {
+//                            System.out.println("There is no doctor with the specializations needed");
+//                        } else {
+//
+//                            Doctor doctorChosen = doctorsOfSpecialty.get((chosenDoctorIndex - 1));
+//                            doctorChosen.addPatientToDoctor(patientObject);
+//                            System.out.println(patientObject.getPatientName() + " has been give to " + doctorChosen.getDoctorName() + " as a patient!");
+//                        }
+//                    } else {
+//                        System.out.println("The Medical system can't support this individuals needs :( ");
+//                    }
                 hospitalService.separatorLine();
             }
             System.out.println("All Patients have been added to the hospital");
@@ -115,14 +104,11 @@ public class HospitalWorld {
             hwPrinter2.printTheHospital();
 
         } else {
-
             System.out.println("You must use a 'y' to restore a Hospital Session, or a 'n' to make a NEW Hospital Session");
         }
 
         hospitalService.separatorLine();
         hospitalService.separatorLine();
-
-
 
         hospitalService.separatorLine();
 

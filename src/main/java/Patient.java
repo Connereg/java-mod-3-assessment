@@ -5,10 +5,20 @@ public class Patient {
     private int healthValue;
 
     //Constructor
-    public Patient(String nameInput, String medicalNeedsInput, int healthValue) {
+    public Patient(String nameInput, String medicalNeedsInput) {
         this.patientName = nameInput;
         this.medicalNeeds = medicalNeedsInput;
-        this.healthValue = healthValue;
+
+        switch (medicalNeedsInput) {
+            case "Common Cold":
+                this.healthValue = 80;
+                break;
+            case "Body Trauma":
+                this.healthValue = 40;
+                break;
+            case "Lime Disease":
+                this.healthValue = 70;
+        }
     }
     //Constructor 2
     public Patient(){

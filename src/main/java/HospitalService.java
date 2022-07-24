@@ -19,7 +19,6 @@
 
         public void doctorMakerInstructions() {
             System.out.println("Please create a doctor to add to the hospital");
-            System.out.println("Please name the Doctor below: ");
 
         }
 
@@ -58,41 +57,27 @@
 
         }
 
-        public int evaluateDoctorHealingPower(String specString) {
-            int returnedHealPowerNum = 0;
+//        public int evaluateDoctorHealingPower(String specString) {
+//            int returnedHealPowerNum = 0;
+//
+//            switch (specString) {
+//                case "Common Cold":
+//                    // FOR COMMON COLD
+//                    returnedHealPowerNum = 10;
+//                    break;
+//                case "Body Trauma":
+//                    // FOR BODY TRAUMA
+//                    returnedHealPowerNum = 5;
+//                    break;
+//                case "Lime Disease":
+//                    //LIME DISEASE CAN ONLY GET WORSE, EVEN WHEN TREATED
+//                    returnedHealPowerNum = -10;
+//                    break;
+//            }
+//            return returnedHealPowerNum;
+//        }
 
-            switch (specString) {
-                case "Common Cold":
-                    // FOR COMMON COLD
-                    returnedHealPowerNum = 10;
-                    break;
-                case "Body Trauma":
-                    // FOR BODY TRAUMA
-                    returnedHealPowerNum = 5;
-                    break;
-                case "Lime Disease":
-                    //LIME DISEASE CAN ONLY GET WORSE, EVEN WHEN TREATED
-                    returnedHealPowerNum = -10;
-                    break;
-            }
-            return returnedHealPowerNum;
-        }
 
-        public int evaluatePatientStartingHealthValue(String specString) {
-            int returnedHealthTotal = 0;
-            switch (specString) {
-                case "Common Cold":
-                    returnedHealthTotal = 80;
-                    break;
-                case "Body Trauma":
-                    returnedHealthTotal = 50;
-                    break;
-                case "Lime Disease":
-                    returnedHealthTotal = 70;
-                    break;
-            }
-            return returnedHealthTotal;
-        }
 
         public void chooseAilmentToTreat() {
             System.out.println("Choose an ailment to treat: ");

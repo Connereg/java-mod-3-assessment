@@ -13,16 +13,36 @@ public class Doctor {
 
 
     //Constructor
-    public Doctor(String doctorNameInput, String doctorSpecializationInput, int healingPower) {
+    public Doctor(String doctorNameInput, String doctorSpecializationInput) {
         this.doctorName = doctorNameInput;
         this.doctorSpecialization = doctorSpecializationInput;
-        this.healingPower = healingPower;
+        this.healingPower = evaluateDoctorHealingPower(doctorSpecializationInput);
         this.patientList = new ArrayList<>();
     }
 
     //CONSTRUCTOR 2
     public Doctor() {
 
+    }
+
+    public int evaluateDoctorHealingPower(String specString) {
+        int returnedHealPowerNum = 0;
+
+        switch (specString) {
+            case "Common Cold":
+                // FOR COMMON COLD
+                returnedHealPowerNum = 10;
+                break;
+            case "Body Trauma":
+                // FOR BODY TRAUMA
+                returnedHealPowerNum = 5;
+                break;
+            case "Lime Disease":
+                //LIME DISEASE CAN ONLY GET WORSE, EVEN WHEN TREATED
+                returnedHealPowerNum = -10;
+                break;
+        }
+        return returnedHealPowerNum;
     }
 
 
@@ -95,8 +115,10 @@ public class Doctor {
         return this.healingPower;
     }
 
-    @Override
-    public void toString() {
-        System.out.println();
+
+    public void doctorToString() {
+        System.out.println("Doctor's Name: " + doctorName );
+        System.out.println("Expertise: " + doctorSpecialization);
+        System.out.println("This Doctor heals Patients by " + healingPower + "points every treatment" );
     }
 }
