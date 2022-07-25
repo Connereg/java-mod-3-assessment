@@ -66,7 +66,10 @@ public class HospitalWorld {
                     Patient patientObject = patientGenerator.createPatient();
 
                     // 8. Add the patients to the DOCTOR
-                    GivePatientToDoctor givePatientToDoctor = new GivePatientToDoctor();
+                    GivePatientToDoctor givePatientToDoctor = new GivePatientToDoctor(patientObject, hospital);
+                    List<Doctor> applicableDoctors = givePatientToDoctor.findApplicableDoctors();
+                    //REFACTOR INTO givPatientToDoctor
+
 //                    if (hospital.getExpertiseMap().containsKey(patientObject.getMedicalNeeds())) {
 //                        List<Doctor> doctorsOfSpecialty = hospital.getDoctorList(patientObject.getMedicalNeeds());
 //                        System.out.println("Available Doctors with required specialization (Please Pick a number associated with a doctor!)");
@@ -75,14 +78,18 @@ public class HospitalWorld {
 //                            indexLocale += 1;
 //                            System.out.println(indexLocale + ". " + doctor.getDoctorName());
 //                        }
-//                        System.out.println("Please choose a doctor to assign the patient to: (Use the number associated with that Doctor)");
-//                        int chosenDoctorIndex = 0;
-//                        try {
-//                            chosenDoctorIndex = scanner.nextInt();
-//                        } catch (Exception e) {
-//                            System.out.println("Please use a number to pick your doctor");
-//                        }
-//                        scanner.nextLine();
+
+                        System.out.println("Please choose a doctor to assign the patient to: (Use the number associated with that Doctor)");
+                        int chosenDoctorIndex = 0;
+                        try {
+                            chosenDoctorIndex = scanner.nextInt();
+                        } catch (Exception e) {
+                            System.out.println("Please use a number to pick your doctor");
+                        }
+                        scanner.nextLine();
+
+                        givePatientToDoctor.retrieveDoctorForPatientViaSelection(chosenDoctorIndex, applicableDoctors);
+                        givePatientToDoctor.addingPatient(); // <- DONE INTERNALLY IN ABOVE CLASS FUNCTION
 //
 //                        if (chosenDoctorIndex == 0) {
 //                            System.out.println("There is no doctor with the specializations needed");
