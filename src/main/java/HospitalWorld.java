@@ -15,16 +15,20 @@ public class HospitalWorld {
         //    1.  INITIALIZE HOSPITAL WORLD (Runner: readFromJson, writeHospitalToJson(Hospital)
         Scanner scanner = new Scanner(System.in); // <- 1.2: Initialize Scanner to Recieve User Input
         HospitalService hospitalService = new HospitalService(); //  <- 1.1:  Initialize Hospital Service to be able to issue instructions
-        hospitalService.restoreHospitalDataInstruction();
-        String restoreSessionInput = scanner.nextLine();
+
         // COLLECTING USER INPUT
         UserInputInterface userInputInterface = new UserInputImplement();
 
-        Hospital hospital = new Hospital();
+        RunAgain runAgain = new RunAgain(userInputInterface);
+
+        while (runAgain.isRunAgain()) {
+            hospitalService.restoreHospitalDataInstruction();
+            String restoreSessionInput = scanner.nextLine();
+            Hospital hospital = new Hospital();
 
             if (restoreSessionInput.equals("y")) {
                 try {
-                     hospital = readJson();
+                    hospital = readJson();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -32,8 +36,7 @@ public class HospitalWorld {
                 HospitalWorldPrinter hwPrinter = new HospitalWorldPrinter(hospital);
                 hwPrinter.printTheHospital();
 
-            }
-            else if (restoreSessionInput.equals("n")) {
+            } else if (restoreSessionInput.equals("n")) {
                 // 2. NAME YOUR HOSPITAL (Hospital Class: Map<String, List<Doctor> Expertise Map,  METHODS: createPatient, createDoctor, assignDoctorToSpecialty, assignPatientToDoctor(Patient)
                 hospitalService.hospitalMakerInstructions();  // <- 2.1: Issue Instruction to name Hospital
                 String hospitalNameInput = scanner.nextLine(); // <- 2.2: Collect User Inout to Name Hospital World
@@ -68,126 +71,84 @@ public class HospitalWorld {
                     // 8. Add the patients to the DOCTOR
                     GivePatientToDoctor givePatientToDoctor = new GivePatientToDoctor(patientObject, hospital);
                     List<Doctor> applicableDoctors = givePatientToDoctor.findApplicableDoctors();
-                    //REFACTOR INTO givPatientToDoctor
 
-//                    if (hospital.getExpertiseMap().containsKey(patientObject.getMedicalNeeds())) {
-//                        List<Doctor> doctorsOfSpecialty = hospital.getDoctorList(patientObject.getMedicalNeeds());
-//                        System.out.println("Available Doctors with required specialization (Please Pick a number associated with a doctor!)");
-//                        int indexLocale = 0;
-//                        for (Doctor doctor : doctorsOfSpecialty) {
-//                            indexLocale += 1;
-//                            System.out.println(indexLocale + ". " + doctor.getDoctorName());
-//                        }
+                    System.out.println("Please choose a doctor to assign the patient to: (Use the number associated with that Doctor)");
+                    int chosenDoctorIndex = 0;
+                    try {
+                        chosenDoctorIndex = scanner.nextInt();
+                    } catch (Exception e) {
+                        System.out.println("Please use a number to pick your doctor");
+                    }
+                    scanner.nextLine();
 
-                        System.out.println("Please choose a doctor to assign the patient to: (Use the number associated with that Doctor)");
-                        int chosenDoctorIndex = 0;
-                        try {
-                            chosenDoctorIndex = scanner.nextInt();
-                        } catch (Exception e) {
-                            System.out.println("Please use a number to pick your doctor");
-                        }
-                        scanner.nextLine();
+                    givePatientToDoctor.retrieveDoctorForPatientViaSelection(chosenDoctorIndex, applicableDoctors);
+                    givePatientToDoctor.addingPatient(); // <- DONE INTERNALLY IN ABOVE CLASS FUNCTION
 
-                        givePatientToDoctor.retrieveDoctorForPatientViaSelection(chosenDoctorIndex, applicableDoctors);
-                        givePatientToDoctor.addingPatient(); // <- DONE INTERNALLY IN ABOVE CLASS FUNCTION
-//
-//                        if (chosenDoctorIndex == 0) {
-//                            System.out.println("There is no doctor with the specializations needed");
-//                        } else {
-//
-//                            Doctor doctorChosen = doctorsOfSpecialty.get((chosenDoctorIndex - 1));
-//                            doctorChosen.addPatientToDoctor(patientObject);
-//                            System.out.println(patientObject.getPatientName() + " has been give to " + doctorChosen.getDoctorName() + " as a patient!");
-//                        }
-//                    } else {
-//                        System.out.println("The Medical system can't support this individuals needs :( ");
-//                    }
-                hospitalService.separatorLine();
-            }
-            System.out.println("All Patients have been added to the hospital");
+                    hospitalService.separatorLine();
+                }
+                System.out.println("All Patients have been added to the hospital");
 
-            // HOSPITAL WORLD PRINTER (OPTIMISTIC)
-            HospitalWorldPrinter hwPrinter2 = new HospitalWorldPrinter(hospital);
-            hwPrinter2.printTheHospital();
+                // HOSPITAL WORLD PRINTER (OPTIMISTIC)
+                HospitalWorldPrinter hwPrinter2 = new HospitalWorldPrinter(hospital);
+                hwPrinter2.printTheHospital();
 
-        } else {
-            System.out.println("You must use a 'y' to restore a Hospital Session, or a 'n' to make a NEW Hospital Session");
-        }
-
-        hospitalService.separatorLine();
-        hospitalService.separatorLine();
-
-        hospitalService.separatorLine();
-
-        // CHOOSE AILMENT TO TREAT
-        hospitalService.chooseAilmentToTreat();
-        int ailmentToTreatChoice = scanner.nextInt();
-        String ailmentChosen = hospitalService.evaluateSpecialty(ailmentToTreatChoice);
-        hospitalService.chosenAilmentReported(ailmentChosen);
-
-        // CHOOSE PATIENT TO TREAT FOR SPECIFIED DOCTOR
-        hospitalService.chooseDoctorForTreatmentInstructions();
-        if (hospital.getExpertiseMap().containsKey(ailmentChosen)) {
-            List<Doctor> doctorsAvailableToTreat = hospital.getDoctorList(ailmentChosen);
-            int indexLocale = 0;
-            for (Doctor doctor : doctorsAvailableToTreat) {
-                indexLocale += 1;
-                System.out.println(indexLocale + ". " + doctor.getDoctorName());
-            }
-            int chosenDoctorIndex = 0;
-            try {
-                chosenDoctorIndex = scanner.nextInt();
-            } catch (Exception e) {
-                System.out.println("Please use a number to pick your doctor");
-            }
-            scanner.nextLine();
-
-            if (chosenDoctorIndex == 0) {
-                System.out.println("There is no doctor with the specializations needed");
             } else {
-                Doctor doctorChosen = doctorsAvailableToTreat.get((chosenDoctorIndex - 1));
-                hospitalService.choosePatientForDoctorToTreatInstructions();
-                doctorChosen.getSimplePatientList();
-                int patientOfDoctorNum = scanner.nextInt();
-                Patient treatedPatient = doctorChosen.getPatientAtIndexLocale(patientOfDoctorNum);
-                hospitalService.treatingPatientNotice(treatedPatient, doctorChosen);
-                int newHealthValueAfterTreatment = treatedPatient.getHealthValue() + doctorChosen.getHealingPower(); // <- Treatment operation effect on health
-                treatedPatient.setHealthValue(newHealthValueAfterTreatment); // <- Setting new Health value on patient
-                hospitalService.postTreatmentStats(treatedPatient); // <- Print New Health value Post treatment
+                System.out.println("You must use a 'y' to restore a Hospital Session, or a 'n' to make a NEW Hospital Session");
             }
+
+            hospitalService.separatorLine();
+            hospitalService.separatorLine();
+
+
+            // CHOOSE AILMENT TO TREAT
+            TreatingProcess treatingProcess = new TreatingProcess(userInputInterface, hospital);
+
+            String illnessTypeString = treatingProcess.treatAnIllness();
+
+            // CHOOSE A DOCTOR TO DO TREATMENT
+            int doctorIndexInt = treatingProcess.chooseDoctorOfSpecialty(illnessTypeString);
+
+            // CHOOSE PATIENT TO TREAT FOR SPECIFIED DOCTOR
+            treatingProcess.haveSpecifiedDoctorTreatPatient(doctorIndexInt, illnessTypeString);
+
 
             //6. SAVE HOSPITAL WORLD TO JSON (Rerun?)
             // JSONIFY THE HOSPITAL
 
             writeJson(hospital);
 
-            scanner.close();
+            // RUN AGAIN PROMPT
+            runAgain.runAgainPrompt();
+            // END OF WHILE LOOP
         }
+        scanner.close();
     }
 
-    // WORLD METHODS
 
-    public static void writeJson(Hospital hospital) throws JsonProcessingException {
-        String json = new ObjectMapper().writeValueAsString(hospital);
+        // WORLD METHODS
 
-        try (FileWriter fw = new FileWriter("Hospital.json");){
-            fw.write(json);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        public static void writeJson (Hospital hospital) throws JsonProcessingException {
+            String json = new ObjectMapper().writeValueAsString(hospital);
+
+            try (FileWriter fw = new FileWriter("Hospital.json");) {
+                fw.write(json);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
-    }
 
- // 1. RETRIEVE JSON FROM FILE
-    // 2. TRANSLATE JSON TO OBJECT
-    // 3. RETURN OBJECT
-    public static Hospital readJson() throws IOException {
-        Path filePath = Path.of("Hospital.json");
+        // 1. RETRIEVE JSON FROM FILE
+        // 2. TRANSLATE JSON TO OBJECT
+        // 3. RETURN OBJECT
+        public static Hospital readJson () throws IOException {
+            Path filePath = Path.of("Hospital.json");
 
-        String content = Files.readString(filePath);
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.readValue(content, Hospital.class);
-    }
+            String content = Files.readString(filePath);
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.readValue(content, Hospital.class);
+        }
 }
+
 
 //  PSUEDOCODE:
 /*

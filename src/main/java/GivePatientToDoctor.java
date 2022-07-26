@@ -50,6 +50,6 @@ public class GivePatientToDoctor {
 
         public void addingPatient() {
             doctor.addPatientToDoctor(patient);
-            System.out.println();
+            System.out.println(patient.getPatientName() + " has been give to " + doctor.getDoctorName() + " as a patient!");
         }
 }

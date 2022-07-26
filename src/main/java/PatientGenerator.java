@@ -11,7 +11,7 @@ public class PatientGenerator {
 
     Patient createPatient() {
         String patientName = inputService.receiveStringInput("What is the patients name? : ");
-        int intResult = inputService.receiveIntInput("What is the Patient's ailment?: \\n 1. Common Cold \\n 2. Body Trauma \\n 3. Lime Disease");
+        int intResult = inputService.receiveIntInput("What is the Patient's ailment?: \n 1. Common Cold \n 2. Body Trauma \n 3. Lime Disease");
         String evaluatedAilment = evaluateSpecialty(intResult);
 
         Patient patient = new Patient(patientName, evaluatedAilment);
